@@ -1,6 +1,11 @@
-# vscode-extensions-sync
+# editor-profile-sync
 
-**Cross-platform** (Windows & macOS) CLI to **export** your extensions from one VS Code–based editor and **sync** them to others. Backup Cursor extensions to VS Code, mirror VS Code to Windsurf, or keep Kiro, Trae, and Antigravity in sync—all with one interactive command.
+Cross-platform CLI to share your VS Code-based editor profile between editors.
+
+You can sync:
+- extensions
+- `settings.json`
+- snippets
 
 ## Requirements
 
@@ -33,7 +38,7 @@ node index.js
 After linking (`npm link` in this folder), run from anywhere:
 
 ```bash
-vscode-extensions-sync
+editor-profile-sync
 ```
 
 ### Options
@@ -45,20 +50,68 @@ vscode-extensions-sync
 
 ## How it works
 
-1. **Detect editors** – The script checks your PATH and lists only **supported editors that are installed**. If none are found, it exits with instructions.
-2. **Export from** – Choose which editor to export extensions from (arrow keys + Enter).
-3. **Sync to** – Choose which editors to sync to (multi-select: **Space** to toggle, **A** to toggle all, **Enter** to continue).
-4. **Mode**
-   - **Install extensions on top of existing (Recommended)** – Installs or updates extensions from the list; leaves other extensions unchanged.
-   - **Exact sync (Replace all extensions)** – Uninstalls extensions not in the list, then installs the full list so the target matches the source.
-5. **Export** – Extensions are written to `extensions.txt` in the current directory.
-6. **Sync** – Each selected editor gets the extensions installed (and in exact-sync mode, extras are uninstalled). You’ll see a per-editor summary: how many synced and how many failed (e.g. extensions not available in that editor’s marketplace).
+1. Detect installed editors (only editors with CLI on PATH are shown).
+2. Choose a source editor.
+3. Choose what to share:
+   - `Extensions`
+   - `settings.json`
+   - `Snippets`
+4. Choose mode(s) for selected item types:
+   - Extensions:
+     - Install on top of existing (additive)
+     - Exact sync (replace all extensions)
+   - Snippets:
+     - Merge (source snippets override key conflicts in matching snippet files)
+     - Replace (target snippets folder is replaced)
+5. Choose one or more target editors.
+6. Run sync.
 
-Editors whose CLI is not on PATH are skipped during sync with a message.
+### Settings merge behavior
+
+For `settings.json`, each target is merged as:
+
+```js
+const merged = {
+  ...targetSettings,
+  ...sourceSettings
+}
+```
+
+What this means:
+- Shared/source settings win on key conflicts.
+- Existing unrelated target settings stay.
+- Editor-specific keys are preserved unless your source uses the same key.
+
+Example:
+
+Target:
+
+```json
+{
+  "terminal.integrated.fontSize": 14
+}
+```
+
+Source:
+
+```json
+{
+  "editor.formatOnSave": true
+}
+```
+
+Result:
+
+```json
+{
+  "terminal.integrated.fontSize": 14,
+  "editor.formatOnSave": true
+}
+```
 
 ## Supported editors
 
-These VS Code–based editors are supported (only those detected on your PATH appear in the prompts):
+These editors are currently supported:
 
 | Editor      | CLI command   |
 | ----------- | ------------- |
@@ -71,9 +124,9 @@ These VS Code–based editors are supported (only those detected on your PATH ap
 
 Each editor must be installed and available in your terminal (e.g. `code`, `cursor`).
 
-## Generated file
+## Generated files
 
-- **`extensions.txt`** – List of extension IDs (one per line) exported from the source editor. Used as the source of truth for sync. Ignored by git in this repo.
+- `extensions.txt` is created when syncing extensions and contains the exported source extension IDs.
 
 ## License
 
