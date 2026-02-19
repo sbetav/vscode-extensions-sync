@@ -140,10 +140,6 @@ These editors are currently supported:
 
 **Windows/Linux**: Each editor must be installed and its CLI available in your terminal (e.g. `code`, `cursor`).
 
-## Generated files
-
-- `extensions.txt` is created when syncing extensions and contains the exported source extension IDs.
-
 ## License
 
 MIT

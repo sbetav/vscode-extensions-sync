@@ -9,16 +9,11 @@ import updateNotifier from "update-notifier";
 import {
   EDITORS,
   EXTENSION_MODES,
-  EXTENSIONS_FILE,
   SNIPPET_MODES,
   SYNC_ITEMS,
 } from "./lib/constants.js";
 import { isEditorInstalled } from "./lib/editor-cli.js";
-import {
-  exportExtensions,
-  readExtensionsFile,
-  syncExtensions,
-} from "./lib/extensions-sync.js";
+import { exportExtensions, syncExtensions } from "./lib/extensions-sync.js";
 import { getSettingsPath, getSnippetsPath } from "./lib/profile-paths.js";
 import { readSourceSettings, syncSettings } from "./lib/settings-sync.js";
 import { syncSnippets } from "./lib/snippets-sync.js";
@@ -133,9 +128,6 @@ async function main() {
     targetIds.includes(e.id),
   );
 
-  const cwd = process.cwd();
-  const extensionsPath = join(cwd, EXTENSIONS_FILE);
-
   let desiredExtensions = [];
   if (syncItems.includes("extensions")) {
     const exportSpinner = ora({
@@ -143,11 +135,8 @@ async function main() {
       color: "cyan",
     }).start();
     try {
-      await exportExtensions(sourceEditor, extensionsPath);
-      desiredExtensions = readExtensionsFile(extensionsPath);
-      exportSpinner.succeed(
-        `Exported ${desiredExtensions.length} extensions to ${EXTENSIONS_FILE}`,
-      );
+      desiredExtensions = await exportExtensions(sourceEditor);
+      exportSpinner.succeed(`${desiredExtensions.length} extensions detected`);
     } catch (err) {
       exportSpinner.fail("Extension export failed");
       console.error("  Error:", err.message, "\n");
