@@ -180,54 +180,27 @@ async function main() {
 
   for (const editor of targetEditors) {
     try {
-      console.log(chalk.bold(editor.name));
-
-      if (syncItems.includes("extensions")) {
-        const spinner = ora({
-          text: `${chalk.bold(editor.name)}: Installing extensions...`,
-          color: "cyan",
-        }).start();
-        const result = await syncExtensions(
-          editor,
-          desiredExtensions,
-          extensionMode,
-          (i, extensionId) => {
-            spinner.text = `${chalk.bold(editor.name)}: [${i + 1}/${desiredExtensions.length}] Installing ${extensionId}`;
-          },
-        );
-        const parts = [chalk.green(`${result.synced} extensions synced`)];
-        if (result.failed.length > 0) {
-          parts.push(chalk.red(`${result.failed.length} failed`));
-        }
-        spinner.succeed(`${chalk.bold(editor.name)}: ${parts.join(", ")}`);
-        if (result.failed.length > 0) {
-          console.log(
-            `      ${chalk.red("Failed:")} ${result.failed.join(", ")}`,
-          );
-        }
-      }
+      console.log(chalk.bold(editor.name) + ":");
 
       if (syncItems.includes("settings")) {
         const spinner = ora({
-          text: `${chalk.bold(editor.name)}: Syncing settings.json...`,
+          text: "Syncing settings.json...",
           color: "cyan",
         }).start();
         try {
           const targetPath = getSettingsPath(editor, { createIfMissing: true });
           const merged = syncSettings(sourceSettings, targetPath);
           spinner.succeed(
-            `${chalk.bold(editor.name)}: settings.json synced (${Object.keys(merged).length} keys)`,
+            `settings.json synced (${Object.keys(merged).length} keys)`,
           );
         } catch (err) {
-          spinner.fail(
-            `${chalk.bold(editor.name)}: settings sync failed (${err.message})`,
-          );
+          spinner.fail(`settings sync failed (${err.message})`);
         }
       }
 
       if (syncItems.includes("snippets")) {
         const spinner = ora({
-          text: `${chalk.bold(editor.name)}: Syncing snippets (${snippetMode})...`,
+          text: `Syncing snippets (${snippetMode} mode)...`,
           color: "cyan",
         }).start();
         try {
@@ -240,12 +213,33 @@ async function main() {
             snippetMode,
           );
           spinner.succeed(
-            `${chalk.bold(editor.name)}: snippets synced (${fileCount} file${fileCount === 1 ? "" : "s"}, ${snippetMode})`,
+            `snippets synced (${fileCount} file${fileCount === 1 ? "" : "s"}, ${snippetMode} mode)`,
           );
         } catch (err) {
-          spinner.fail(
-            `${chalk.bold(editor.name)}: snippets sync failed (${err.message})`,
-          );
+          spinner.fail(`snippets sync failed (${err.message})`);
+        }
+      }
+
+      if (syncItems.includes("extensions")) {
+        const spinner = ora({
+          text: "Installing extensions...",
+          color: "cyan",
+        }).start();
+        const result = await syncExtensions(
+          editor,
+          desiredExtensions,
+          extensionMode,
+          (i, extensionId) => {
+            spinner.text = `[${i + 1}/${desiredExtensions.length}] Installing ${extensionId}`;
+          },
+        );
+        const parts = [chalk.green(`${result.synced} extensions synced`)];
+        if (result.failed.length > 0) {
+          parts.push(chalk.red(`${result.failed.length} failed`));
+        }
+        spinner.succeed(parts.join(", "));
+        if (result.failed.length > 0) {
+          console.log(`${chalk.red("Failed:")} ${result.failed.join(", ")}`);
         }
       }
 
