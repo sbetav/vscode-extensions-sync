@@ -71,12 +71,27 @@ async function main() {
   );
 
   if (availableEditors.length === 0) {
-    detectSpinner.fail("No supported editors found on PATH.");
-    console.log(
-      chalk.yellow(
-        "\n  Install at least one supported editor and make sure its CLI is on your PATH.\n",
-      ),
-    );
+    detectSpinner.fail("No supported editors found.");
+    if (process.platform === "darwin") {
+      console.log(
+        chalk.yellow(
+          "\n  On macOS, you have two options:\n" +
+            "  1. Install terminal command (recommended):\n" +
+            "     • Open your editor\n" +
+            "     • Press Cmd + Shift + P\n" +
+            "     • Type: shell command\n" +
+            "     • Select: Shell Command: Install '[command]' command in PATH\n" +
+            "     • Restart your terminal\n" +
+            "  2. Or make sure the editor is installed in /Applications/[EditorName].app\n",
+        ),
+      );
+    } else {
+      console.log(
+        chalk.yellow(
+          "\n  Install at least one supported editor and make sure its CLI is on your PATH.\n",
+        ),
+      );
+    }
     process.exit(1);
   }
 

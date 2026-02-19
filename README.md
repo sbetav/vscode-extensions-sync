@@ -14,7 +14,16 @@ You can sync:
 
 - **Node.js** 18 or newer
 - **npm** (comes with Node.js)
-- At least one [supported editor](#supported-editors) installed, with its CLI on your PATH (e.g. `code`, `cursor`)
+- At least one [supported editor](#supported-editors) installed
+  - **macOS**: Choose one of the following options:
+    - **Option 1 (Recommended)**: Install terminal command:
+      1. Open your editor
+      2. Press `Cmd + Shift + P` to open the Command Palette
+      3. Type: `shell command`
+      4. Select: **Shell Command: Install '[command]' command in PATH**
+      5. Restart your terminal
+    - **Option 2**: Have the editor installed in `/Applications/` (e.g., `/Applications/Visual Studio Code.app`). The CLI will be auto-detected from the app bundle.
+  - **Windows/Linux**: Editor CLI must be on your PATH (e.g., `code`, `cursor`)
 
 ## Install
 
@@ -127,7 +136,9 @@ These editors are currently supported:
 | VS Code     | `code`        |
 | Windsurf    | `windsurf`    |
 
-Each editor must be installed and available in your terminal (e.g. `code`, `cursor`).
+**macOS**: Editors work with either option: install terminal command (recommended) or auto-detect from `/Applications/` if installed as `.app` bundles.
+
+**Windows/Linux**: Each editor must be installed and its CLI available in your terminal (e.g. `code`, `cursor`).
 
 ## Generated files
 
