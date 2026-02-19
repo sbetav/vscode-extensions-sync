@@ -1,0 +1,35 @@
+{
+  "name": "vscode-extensions-sync",
+  "version": "1.0.0",
+  "description": "Cross-platform extension export and sync for VS Code-based editors",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "vscode-extensions-sync": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "run": "node index.js"
+  },
+  "keywords": [
+    "vscode",
+    "cursor",
+    "windsurf",
+    "trae",
+    "kiro",
+    "extensions",
+    "sync",
+    "export",
+    "vscode-extensions-sync"
+  ],
+  "author": "sbetav",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "inquirer": "^9.2.22",
+    "ora": "^9.3.0"
+  }
+}
