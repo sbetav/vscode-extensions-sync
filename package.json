@@ -1,6 +1,6 @@
 {
   "name": "editor-profile-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cross-platform extensions, settings.json, and snippets sync for VS Code-based editors",
   "type": "module",
   "main": "index.js",
@@ -34,6 +34,7 @@
     "chalk": "^5.6.2",
     "inquirer": "^9.2.22",
     "jsonc-parser": "^3.3.1",
-    "ora": "^9.3.0"
+    "ora": "^9.3.0",
+    "update-notifier": "^7.3.1"
   }
 }

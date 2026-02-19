@@ -3,9 +3,10 @@
 Cross-platform CLI to share your VS Code-based editor profile between editors.
 
 You can sync:
+
 - extensions
-- `settings.json`
 - snippets
+- `settings.json`
 
 ## Requirements
 
@@ -15,6 +16,25 @@ You can sync:
 
 ## Install
 
+### Via npx (recommended)
+
+Run directly without installing:
+
+```bash
+npx editor-profile-sync
+```
+
+### Global install
+
+Install once, then run from anywhere:
+
+```bash
+npm install -g editor-profile-sync
+editor-profile-sync
+```
+
+### From source
+
 Clone this repo, then install dependencies:
 
 ```bash
@@ -23,25 +43,7 @@ npm install
 
 ## Usage
 
-From the project folder:
-
-```bash
-npm start
-```
-
-or:
-
-```bash
-node index.js
-```
-
-After linking (`npm link` in this folder), run from anywhere:
-
-```bash
-editor-profile-sync
-```
-
-### Options
+### CLI options
 
 | Option            | Description         |
 | ----------------- | ------------------- |
@@ -73,11 +75,12 @@ For `settings.json`, each target is merged as:
 ```js
 const merged = {
   ...targetSettings,
-  ...sourceSettings
-}
+  ...sourceSettings,
+};
 ```
 
 What this means:
+
 - Shared/source settings win on key conflicts.
 - Existing unrelated target settings stay.
 - Editor-specific keys are preserved unless your source uses the same key.

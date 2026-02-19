@@ -5,6 +5,7 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import ora from "ora";
 import chalk from "chalk";
+import updateNotifier from "update-notifier";
 import {
   EDITORS,
   EXTENSION_MODES,
@@ -32,6 +33,9 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const pkg = JSON.parse(readFileSync(join(__dirname, "package.json"), "utf-8"));
+
+const notifier = updateNotifier({ pkg });
+notifier.notify();
 
 async function main() {
   const args = process.argv.slice(2);
