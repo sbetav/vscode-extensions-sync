@@ -2,6 +2,8 @@
 
 Cross-platform CLI to share your VS Code-based editor profile between editors.
 
+[GitHub](https://github.com/sbetav/editor-profile-sync) · [npm](https://www.npmjs.com/package/editor-profile-sync)
+
 You can sync:
 
 - extensions

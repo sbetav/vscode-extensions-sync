@@ -27,6 +27,7 @@
   ],
   "author": "sbetav",
   "license": "MIT",
+  "repository": "github:sbetav/editor-profile-sync",
   "engines": {
     "node": ">=18"
   },
