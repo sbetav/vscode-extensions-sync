@@ -203,7 +203,7 @@ async function main() {
   ${pkg.name} v${pkg.version}
   ${pkg.description}
 
-  Usage: dev-setup [options]
+  Usage: vscode-extensions-sync [options]
 
   Options:
     -h, --help      Show this help message
