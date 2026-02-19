@@ -230,14 +230,15 @@ async function main() {
           desiredExtensions,
           extensionMode,
           (i, extensionId) => {
-            spinner.text = `[${i + 1}/${desiredExtensions.length}] Installing ${extensionId}`;
+            spinner.text = `Installing extensions [${i + 1}/${desiredExtensions.length}] ${chalk.dim(extensionId)}`;
           },
         );
-        const parts = [chalk.green(`${result.synced} extensions synced`)];
-        if (result.failed.length > 0) {
-          parts.push(chalk.red(`${result.failed.length} failed`));
-        }
-        spinner.succeed(parts.join(", "));
+        const successPart = chalk.green(`${result.synced} installed`);
+        const failedPart =
+          result.failed.length > 0
+            ? `, ${chalk.red(`${result.failed.length} failed`)}`
+            : "";
+        spinner.succeed(`extensions synced (${successPart}${failedPart})`);
         if (result.failed.length > 0) {
           console.log(`${chalk.red("Failed:")} ${result.failed.join(", ")}`);
         }
