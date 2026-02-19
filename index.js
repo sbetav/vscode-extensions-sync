@@ -91,7 +91,7 @@ async function main() {
   }
 
   detectSpinner.succeed(
-    `Found ${availableEditors.length} editor(s): ${availableEditors
+    `Found ${availableEditors.length} editor${availableEditors.length === 1 ? "" : "s"}: ${availableEditors
       .map((e) => e.name)
       .join(", ")}`,
   );
