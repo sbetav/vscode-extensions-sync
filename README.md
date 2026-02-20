@@ -9,6 +9,7 @@ You can sync:
 - extensions
 - snippets
 - `settings.json`
+- `keybindings.json`
 
 ## Requirements
 
@@ -67,8 +68,9 @@ npm install
 2. Choose a source editor.
 3. Choose what to share:
    - `Extensions`
-   - `settings.json`
    - `Snippets`
+   - `settings.json`
+   - `keybindings.json`
 4. Choose mode(s) for selected item types:
    - Extensions:
      - Install on top of existing (additive)
@@ -121,6 +123,48 @@ Result:
   "terminal.integrated.fontSize": 14,
   "editor.formatOnSave": true
 }
+```
+
+### Keybindings merge behavior
+
+For `keybindings.json`, keybindings are merged intelligently:
+
+- Source keybindings override target ones with the same `key` + `command` combination
+- Existing target keybindings that don't conflict are preserved
+- New source keybindings are added to the target
+
+Example:
+
+Target:
+
+```json
+[{ "key": "ctrl+k", "command": "workbench.action.terminal.clear" }]
+```
+
+Source:
+
+```json
+[
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  { "key": "ctrl+shift+p", "command": "workbench.action.showCommands" }
+]
+```
+
+Result:
+
+```json
+[
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  { "key": "ctrl+shift+p", "command": "workbench.action.showCommands" }
+]
 ```
 
 ## Supported editors

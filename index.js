@@ -14,9 +14,17 @@ import {
 } from "./lib/constants.js";
 import { isEditorInstalled } from "./lib/editor-cli.js";
 import { exportExtensions, syncExtensions } from "./lib/extensions-sync.js";
-import { getSettingsPath, getSnippetsPath } from "./lib/profile-paths.js";
+import {
+  getSettingsPath,
+  getSnippetsPath,
+  getKeybindingsPath,
+} from "./lib/profile-paths.js";
 import { readSourceSettings, syncSettings } from "./lib/settings-sync.js";
 import { syncSnippets } from "./lib/snippets-sync.js";
+import {
+  readSourceKeybindings,
+  syncKeybindings,
+} from "./lib/keybindings-sync.js";
 import {
   promptExtensionMode,
   promptSnippetMode,
@@ -165,6 +173,18 @@ async function main() {
     }
   }
 
+  let sourceKeybindings = [];
+  if (syncItems.includes("keybindings")) {
+    try {
+      sourceKeybindings = readSourceKeybindings(
+        getKeybindingsPath(sourceEditor),
+      );
+    } catch (err) {
+      console.error(`  ${err.message}\n`);
+      process.exit(1);
+    }
+  }
+
   console.log("");
 
   for (const editor of targetEditors) {
@@ -206,6 +226,24 @@ async function main() {
           );
         } catch (err) {
           spinner.fail(`snippets sync failed (${err.message})`);
+        }
+      }
+
+      if (syncItems.includes("keybindings")) {
+        const spinner = ora({
+          text: "Syncing keybindings.json...",
+          color: "cyan",
+        }).start();
+        try {
+          const targetPath = getKeybindingsPath(editor, {
+            createIfMissing: true,
+          });
+          const merged = syncKeybindings(sourceKeybindings, targetPath);
+          spinner.succeed(
+            `keybindings.json synced (${merged.length} binding${merged.length === 1 ? "" : "s"})`,
+          );
+        } catch (err) {
+          spinner.fail(`keybindings sync failed (${err.message})`);
         }
       }
 
